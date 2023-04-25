@@ -13,9 +13,10 @@ const App = () => {
   const joinRoom = async (user, room) => {
     try {
       const connection = new HubConnectionBuilder()
-        .withUrl("https://localhost:44382/chat")
+        .withUrl("https://localhost:5001/chat")
         .configureLogging(LogLevel.Information)
         .build();
+        console.log("connection=========",connection);
 
       connection.on("ReceiveMessage", (user, message) => {
         setMessages(messages => [...messages, { user, message }]);
@@ -32,6 +33,7 @@ const App = () => {
       });
 
       await connection.start();
+
       await connection.invoke("JoinRoom", { user, room });
       setConnection(connection);
     } catch (e) {
